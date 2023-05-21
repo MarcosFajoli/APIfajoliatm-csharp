@@ -54,5 +54,37 @@ namespace APIfajoliatm_csharp.Controllers
                 return CreatedAtAction("GetById", new { id = account.Id }, account);
             }
         }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Put(int id, Account account)
+        {
+            var accountReturned = _context.Accounts.SingleOrDefault(a => a.Id == id);
+
+            if (accountReturned == null)
+            {
+                return NotFound();
+            }
+
+            accountReturned.Update(account);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Delete(int id)
+        {
+            var accountReturned = _context.Accounts.SingleOrDefault(a => a.Id == id);
+
+            if (accountReturned == null)
+            {
+                return NotFound();
+            }
+
+            _context.Accounts.Remove(accountReturned);
+            return NoContent();
+        }
     }
 }

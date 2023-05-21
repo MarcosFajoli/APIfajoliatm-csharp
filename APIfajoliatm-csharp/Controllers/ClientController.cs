@@ -46,5 +46,37 @@ namespace APIfajoliatm_csharp.Controllers
             _context.Clients.Add(client);
             return CreatedAtAction("GetById", new { id = client.Id }, client);
         }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Put(int id, string name)
+        {
+            var clientReturned = _context.Clients.SingleOrDefault(c => c.Id == id);
+
+            if (clientReturned == null)
+            {
+                return NotFound();
+            }
+
+            clientReturned.Update(name);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Delete(int id)
+        {
+            var clientReturned = _context.Clients.SingleOrDefault(a => a.Id == id);
+
+            if (clientReturned == null)
+            {
+                return NotFound();
+            }
+
+            _context.Clients.Remove(clientReturned);
+            return NoContent();
+        }
     }
 }
